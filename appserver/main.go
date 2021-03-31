@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
+	"regexp"
 
 	"github.com/kelseyhightower/envconfig"
 	echo "github.com/labstack/echo/v4"
@@ -22,6 +24,17 @@ type (
 
 func main() {
 
+	// Rewrite Middleware for Client-Side Routing
+	rewriteMiddleware := middleware.RewriteWithConfig(middleware.RewriteConfig{
+		RegexRules: map[*regexp.Regexp]string{
+			// Real files on-disk with file extension (.js, .css, etc.) paths unmodified
+			regexp.MustCompile("^(\\/.+\\.(css|html|ico|js|json|map|png|txt)$)"): "/$1",
+			// All other paths return index.html (Client-side Routing)
+			regexp.MustCompile("^\\/[a-zA-Z0-9\\/\\-]+$"): "/index.html",
+		},
+	},
+	)
+
 	// Hosts
 	hosts := map[string]*Host{}
 
@@ -31,9 +44,20 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
+	// DEFAULT
+	// =======
+	// Routes for appserver itself. Implemented to support health checks, etc.
+	// Note: Router is not included in hosts map
+	d := echo.New()
+	d.Use(middleware.Recover())
+	d.GET("/health", func(c echo.Context) error {
+		return c.String(http.StatusOK, "healthy")
+	})
+
 	// HOME
 	// ====
 	home := echo.New()
+	home.Pre(rewriteMiddleware)
 	home.Use(middleware.Recover())
 	home.Static("/", "/data/home")
 	hosts[cfg.Domain] = &Host{home}
@@ -41,6 +65,7 @@ func main() {
 	// CUMULUS
 	// =======
 	cumulus := echo.New()
+	cumulus.Pre(rewriteMiddleware)
 	cumulus.Use(middleware.Recover())
 	cumulus.Static("/", "/data/cumulus")
 	hosts[fmt.Sprintf("cumulus.%s", cfg.Domain)] = &Host{cumulus}
@@ -48,6 +73,7 @@ func main() {
 	// MIDAS
 	// =====
 	midas := echo.New()
+	midas.Pre(rewriteMiddleware)
 	midas.Use(middleware.Recover())
 	midas.Static("/", "/data/midas")
 	hosts[fmt.Sprintf("midas.%s", cfg.Domain)] = &Host{midas}
@@ -55,6 +81,7 @@ func main() {
 	// WATER
 	// =====
 	water := echo.New()
+	water.Pre(rewriteMiddleware)
 	water.Use(middleware.Recover())
 	water.Static("/", "/data/water")
 	hosts[fmt.Sprintf("water.%s", cfg.Domain)] = &Host{water}
@@ -67,7 +94,11 @@ func main() {
 		host := hosts[req.Host]
 
 		if host == nil {
-			err = echo.ErrNotFound
+			// Default router; Most commonly used for health checks
+			// AWS Target Group sends health checks with host header set to the IP of Load Balancer
+			// This IP is not in the host map, so request is served with default router "d".
+			// See: https://docs.aws.amazon.com/elasticloadbalancing/latest/network/target-group-health-checks.html
+			d.ServeHTTP(res, req)
 		} else {
 			host.Echo.ServeHTTP(res, req)
 		}
