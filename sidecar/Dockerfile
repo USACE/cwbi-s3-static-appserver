@@ -23,4 +23,6 @@ WORKDIR "/data"
 
 USER data
 
+VOLUME [ "/data" ]
+
 ENTRYPOINT ["/entrypoint.sh"]

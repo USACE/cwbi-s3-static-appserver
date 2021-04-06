@@ -18,4 +18,6 @@ RUN mkdir /data && chown data:data /data && chmod 755 /data
 
 USER data
 
+VOLUME [ "/data" ]
+
 ENTRYPOINT ["/go/bin/appserver"]
