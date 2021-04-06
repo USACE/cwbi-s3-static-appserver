@@ -14,10 +14,10 @@ The entire stack can be brought-up locally using `docker-compose`.
 
 | Application                                                        | Hosted Locally At ...    |
 | ------------------------------------------------------------------ | ------------------------ |
-| [Home](https://github.com/USACE/cwbi-application-development-docs) | `home.localhost:8000`    |
-| [Cumulus](https://github.com/USACE/cumulus-ui)                     | `cumulus.localhost:8000` |
-| [MIDAS](https://github.com/USACE/instrumentation-ui)               | `midas.localhost:8000`   |
-| [Access to Water](https://github.com/USACE/water-ui)               | `water.localhost:8000`   |
+| [Home](https://github.com/USACE/cwbi-application-development-docs) | `home.localhost:8080`    |
+| [Cumulus](https://github.com/USACE/cumulus-ui)                     | `cumulus.localhost:8080` |
+| [MIDAS](https://github.com/USACE/instrumentation-ui)               | `midas.localhost:8080`   |
+| [Access to Water](https://github.com/USACE/water-ui)               | `water.localhost:8080`   |
 
 ## Environment Variables for Container `appserver`
 
