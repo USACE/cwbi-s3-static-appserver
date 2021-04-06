@@ -21,10 +21,10 @@ The entire stack can be brought-up locally using `docker-compose`.
 
 ## Environment Variables for Container `appserver`
 
-- `DOMAIN`: Top level domain where all apps will be served. Individual apps are served as a sub-domain to this top level domain. Default value for development
-- `SUBDOMAIN_PREFIX`: Prepend all hostnames with this prefix. This is most easily explained using a practical example:
+- `APPSSERVER_DOMAIN`: Top level domain where all apps will be served. Individual apps are served as a sub-domain to this top level domain. Default value for development
+- `APPSERVER_SUBDOMAIN_PREFIX`: Prepend all hostnames with this prefix. This is most easily explained using a practical example:
 
-  For application `water`, setting `DOMAIN=rsgis.dev` and `SUBDOMAIN_PREFIX=develop-` serves the application `water` at `develop-water.rsgis.dev`. Setting `DOMAIN=rsgis.dev` and omitting `SUBDOMAIN_PREFIX` (i.e. `""`) serves the application `water` at `water.rsgis.dev`. Practically, this is used to serve `development` and `stable` versions of apps using different s3 buckets, but the same container image.
+  For application `water`, setting `APPSERVER_DOMAIN=rsgis.dev` and `APPSERVER_SUBDOMAIN_PREFIX=develop-` serves the application `water` at `develop-water.rsgis.dev`. Setting `APPSERVER_DOMAIN=rsgis.dev` and omitting `APPSERVER_SUBDOMAIN_PREFIX` (i.e. `""`) serves the application `water` at `water.rsgis.dev`. Practically, this is used to serve `development` and `stable` versions of apps using different s3 buckets, but the same container image.
 
 ## Environment Variables for Container `appserver-sidecar`
 
