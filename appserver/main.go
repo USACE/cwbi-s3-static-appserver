@@ -14,7 +14,8 @@ import (
 // Based on Virtual Hosting Example at https://echo.labstack.com/cookbook/subdomains/
 type (
 	Config struct {
-		Domain string `envconfig:"domain"`
+		Domain          string `envconfig:"domain"`
+		SubdomainPrefix string `envconfig:"subdomain_prefix"`
 	}
 
 	Host struct {
@@ -60,7 +61,7 @@ func main() {
 	home.Pre(rewriteMiddleware)
 	home.Use(middleware.Recover())
 	home.Static("/", "/data/home")
-	hosts[cfg.Domain] = &Host{home}
+	hosts[fmt.Sprintf("%shome.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{home}
 
 	// CUMULUS
 	// =======
@@ -68,7 +69,7 @@ func main() {
 	cumulus.Pre(rewriteMiddleware)
 	cumulus.Use(middleware.Recover())
 	cumulus.Static("/", "/data/cumulus")
-	hosts[fmt.Sprintf("cumulus.%s", cfg.Domain)] = &Host{cumulus}
+	hosts[fmt.Sprintf("%scumulus.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{cumulus}
 
 	// MIDAS
 	// =====
@@ -76,7 +77,7 @@ func main() {
 	midas.Pre(rewriteMiddleware)
 	midas.Use(middleware.Recover())
 	midas.Static("/", "/data/midas")
-	hosts[fmt.Sprintf("midas.%s", cfg.Domain)] = &Host{midas}
+	hosts[fmt.Sprintf("%smidas.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{midas}
 
 	// WATER
 	// =====
@@ -84,7 +85,7 @@ func main() {
 	water.Pre(rewriteMiddleware)
 	water.Use(middleware.Recover())
 	water.Static("/", "/data/water")
-	hosts[fmt.Sprintf("water.%s", cfg.Domain)] = &Host{water}
+	hosts[fmt.Sprintf("%swater.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{water}
 
 	// Server
 	e := echo.New()

@@ -47,6 +47,7 @@ services:
       context: appserver
     environment:
       - DOMAIN=localhost:8000
+      - SUBDOMAIN_PREFIX=stable.
     volumes:
       - data:/data
     ports:
