@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -z "S3_ENDPOINT_URL" ]
+if [ -z "$S3_ENDPOINT_URL" ]
 then
     CMD="aws s3 sync s3://${S3_BUCKET} /data/"
 else
