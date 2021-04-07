@@ -47,7 +47,8 @@ services:
       context: appserver
     environment:
       - DOMAIN=localhost:8080
-      - SUBDOMAIN_PREFIX=stable.
+      - SUBDOMAIN_PREFIX=
+      - APPSERVER_RELOAD_INTERVAL=
     volumes:
       - data:/data
     ports:

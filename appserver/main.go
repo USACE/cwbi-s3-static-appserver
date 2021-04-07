@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"regexp"
 
+	"github.com/facebookgo/grace/gracehttp"
 	"github.com/kelseyhightower/envconfig"
 	echo "github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -89,6 +90,7 @@ func main() {
 
 	// Server
 	e := echo.New()
+	e.Server.Addr = ":8080"
 	e.Any("/*", func(c echo.Context) (err error) {
 		req := c.Request()
 		res := c.Response()
@@ -105,5 +107,5 @@ func main() {
 		}
 		return
 	})
-	e.Logger.Fatal(e.Start(":8080"))
+	e.Logger.Fatal(gracehttp.Serve(e.Server))
 }

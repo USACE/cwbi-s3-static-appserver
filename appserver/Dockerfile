@@ -7,7 +7,11 @@ RUN apk update && apk add --no-cache git
 
 # Copy In Source Code
 WORKDIR /go/src/app
-COPY . .
+COPY main.go go.mod go.sum ./
+# Copy In entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod 700 /entrypoint.sh \
+  && chown data:data /entrypoint.sh
 
 # Build
 RUN go get -d -v \
@@ -20,4 +24,4 @@ USER data
 
 VOLUME [ "/data" ]
 
-ENTRYPOINT ["/go/bin/appserver"]
+ENTRYPOINT ["/entrypoint.sh"]
