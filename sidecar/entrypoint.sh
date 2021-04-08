@@ -2,9 +2,9 @@
 
 if [ -z "$S3_ENDPOINT_URL" ]
 then
-    CMD="aws s3 sync s3://${S3_BUCKET} /data/"
+    CMD="aws s3 sync s3://${S3_BUCKET} /data/ --exact-timestamps --delete"
 else
-    CMD="aws s3 --endpoint-url ${S3_ENDPOINT_URL} sync s3://${S3_BUCKET} /data/"
+    CMD="aws s3 --endpoint-url ${S3_ENDPOINT_URL} sync s3://${S3_BUCKET} /data/ --exact-timestamps --delete"
 fi
 
 # Sleep for 20 seconds; Used in local development to wait for Minio to initialize
