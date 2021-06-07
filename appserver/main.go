@@ -64,6 +64,14 @@ func main() {
 	home.Static("/", "/data/home")
 	hosts[fmt.Sprintf("%shome.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{home}
 
+	// COLUMBIA RIVER HYDROLOGY
+	// ========================
+	crb := echo.New()
+	crb.Pre(rewriteMiddleware)
+	crb.Use(middleware.Recover())
+	crb.Static("/", "/data/crb-hydrology")
+	hosts[fmt.Sprintf("%scrb-hydrology.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{crb}
+
 	// CUMULUS
 	// =======
 	cumulus := echo.New()
