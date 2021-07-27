@@ -96,6 +96,14 @@ func main() {
 	water.Static("/", "/data/water")
 	hosts[fmt.Sprintf("%swater.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{water}
 
+	// CURG 2021 Presentation RSGIS
+	// ============================
+	curg2021 := echo.New()
+	curg2021.Pre(rewriteMiddleware)
+	curg2021.Use(middleware.Recover())
+	curg2021.Static("/", "/data/curg-2021")
+	hosts[fmt.Sprintf("%scurg-2021.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{curg2021}
+
 	// Server
 	e := echo.New()
 	e.Server.Addr = ":8080"
