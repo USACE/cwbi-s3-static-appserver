@@ -104,6 +104,14 @@ func main() {
 	curg2021.Static("/", "/data/curg-2021")
 	hosts[fmt.Sprintf("%scurg-2021.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{curg2021}
 
+	// Pallid Sturgeon
+	// ===============
+	sturgeon := echo.New()
+	sturgeon.Pre(rewriteMiddleware)
+	sturgeon.Use(middleware.Recover())
+	sturgeon.Static("/", "/data/pallid-sturgeon")
+	hosts[fmt.Sprintf("%spallid-sturgeon.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{sturgeon}
+
 	// Server
 	e := echo.New()
 	e.Server.Addr = ":8080"
