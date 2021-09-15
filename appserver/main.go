@@ -32,7 +32,7 @@ func main() {
 			// Real files on-disk with file extension (.js, .css, etc.) paths unmodified
 			regexp.MustCompile("^(\\/.+\\.(css|html|ico|js|json|map|png|txt)$)"): "/$1",
 			// All other paths return index.html (Client-side Routing)
-			regexp.MustCompile("^\\/[a-zA-Z0-9\\/\\-]+$"): "/index.html",
+			regexp.MustCompile("^\\/[a-zA-Z0-9\\/\\-\\_]+$"): "/index.html",
 		},
 	},
 	)
