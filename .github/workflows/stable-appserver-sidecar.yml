@@ -2,7 +2,7 @@ name: Appserver Sidecar
 
 on:
   push:
-    branches: [develop]
+    branches: [stable]
   workflow_dispatch:
 jobs:
   DockerImage:
@@ -19,9 +19,9 @@ jobs:
         if: ${{ always() }}
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.CASTLECI_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.CASTLECI_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.CASTLECI_AWS_REGION }}
+          aws-access-key-id: ${{ secrets.CASTLECI_STABLE_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CASTLECI_STABLE_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.CASTLECI_STABLE_AWS_REGION }}
 
       - name: Login to Amazon ECR
         if: ${{ success() }}
@@ -35,9 +35,9 @@ jobs:
           ECR_REPOSITORY: cwbi-s3-static-appserver-sidecar
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest sidecar
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:stable sidecar
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:stable
 
       - name: Logout of Amazon ECR
         if: ${{ always() }}
