@@ -51,7 +51,7 @@ func main() {
 	// Routes for appserver itself. Implemented to support health checks, etc.
 	// Note: Router is not included in hosts map
 	d := echo.New()
-	d.Use(middleware.Recover())
+	d.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
 	d.GET("/health", func(c echo.Context) error {
 		return c.String(http.StatusOK, "healthy")
 	})
@@ -60,7 +60,7 @@ func main() {
 	// ====
 	home := echo.New()
 	home.Pre(rewriteMiddleware)
-	home.Use(middleware.Recover())
+	home.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
 	home.Static("/", "/data/home")
 	hosts[fmt.Sprintf("%shome.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{home}
 
@@ -68,7 +68,7 @@ func main() {
 	// ========================
 	crb := echo.New()
 	crb.Pre(rewriteMiddleware)
-	crb.Use(middleware.Recover())
+	crb.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
 	crb.Static("/", "/data/crb-hydrology")
 	hosts[fmt.Sprintf("%scrb-hydrology.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{crb}
 
@@ -76,7 +76,7 @@ func main() {
 	// =======
 	cumulus := echo.New()
 	cumulus.Pre(rewriteMiddleware)
-	cumulus.Use(middleware.Recover())
+	cumulus.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
 	cumulus.Static("/", "/data/cumulus")
 	hosts[fmt.Sprintf("%scumulus.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{cumulus}
 
@@ -84,7 +84,7 @@ func main() {
 	// =====
 	midas := echo.New()
 	midas.Pre(rewriteMiddleware)
-	midas.Use(middleware.Recover())
+	midas.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
 	midas.Static("/", "/data/midas")
 	hosts[fmt.Sprintf("%smidas.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{midas}
 
@@ -92,7 +92,7 @@ func main() {
 	// =====
 	water := echo.New()
 	water.Pre(rewriteMiddleware)
-	water.Use(middleware.Recover())
+	water.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
 	water.Static("/", "/data/water")
 	hosts[fmt.Sprintf("%swater.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{water}
 
@@ -100,7 +100,7 @@ func main() {
 	// ===============
 	sturgeon := echo.New()
 	sturgeon.Pre(rewriteMiddleware)
-	sturgeon.Use(middleware.Recover())
+	sturgeon.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
 	sturgeon.Static("/", "/data/pallid-sturgeon")
 	hosts[fmt.Sprintf("%spallid-sturgeon.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{sturgeon}
 
