@@ -96,8 +96,8 @@ func main() {
 	water.Static("/", "/data/water")
 	hosts[fmt.Sprintf("%swater.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{water}
 
-	// WATER
-	// =====
+	// WORKFORCE
+	// =========
 	workforce := echo.New()
 	workforce.Pre(rewriteMiddleware)
 	workforce.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
