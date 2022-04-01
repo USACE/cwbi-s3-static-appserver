@@ -118,6 +118,14 @@ func main() {
 	sturgeon.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
 	sturgeon.Static("/", "/data/pallid-sturgeon")
 	hosts[fmt.Sprintf("%spallid-sturgeon.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{sturgeon}
+	
+	// CSPI
+	// ===============
+	cspi := echo.New()
+	cspi.Pre(rewriteMiddleware)
+	cspi.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
+	cspi.Static("/", "/data/cspi")
+	hosts[fmt.Sprintf("%scspi.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{cspi}
 
 	// Server
 	e := echo.New()
