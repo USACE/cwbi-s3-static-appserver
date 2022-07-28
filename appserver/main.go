@@ -104,6 +104,14 @@ func main() {
 	workforce.Static("/", "/data/workforce")
 	hosts[fmt.Sprintf("%sworkforce.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{workforce}
 
+	// PLACES
+	// =========
+	places := echo.New()
+	places.Pre(rewriteMiddleware)
+	places.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
+	places.Static("/", "/data/places")
+	hosts[fmt.Sprintf("%splaces.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{places}
+
 	// Pallid Sturgeon
 	// ===============
 	sturgeon := echo.New()
@@ -111,6 +119,14 @@ func main() {
 	sturgeon.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
 	sturgeon.Static("/", "/data/pallid-sturgeon")
 	hosts[fmt.Sprintf("%spallid-sturgeon.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{sturgeon}
+
+	// CSPI
+	// ===============
+	cspi := echo.New()
+	cspi.Pre(rewriteMiddleware)
+	cspi.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
+	cspi.Static("/", "/data/cspi")
+	hosts[fmt.Sprintf("%scspi.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{cspi}
 
 	// Server
 	e := echo.New()
