@@ -96,6 +96,22 @@ func main() {
 	water.Static("/", "/data/water")
 	hosts[fmt.Sprintf("%swater.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{water}
 
+	// WATER ADMIN
+	// ===============
+	waterAdmin := echo.New()
+	waterAdmin.Pre(rewriteMiddleware)
+	waterAdmin.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
+	waterAdmin.Static("/", "/data/water-admin")
+	hosts[fmt.Sprintf("%swater-admin.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{waterAdmin}
+
+	// WATER DOCS
+	// ==========
+	waterDocs := echo.New()
+	waterDocs.Pre(rewriteMiddleware)
+	waterDocs.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
+	waterDocs.Static("/", "/data/water-admin")
+	hosts[fmt.Sprintf("%swater-docs.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{waterDocs}
+
 	// WORKFORCE
 	// =========
 	workforce := echo.New()
