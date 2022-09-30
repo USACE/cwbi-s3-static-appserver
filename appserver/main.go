@@ -109,7 +109,7 @@ func main() {
 	waterDocs := echo.New()
 	waterDocs.Pre(rewriteMiddleware)
 	waterDocs.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
-	waterDocs.Static("/", "/data/water-admin")
+	waterDocs.Static("/", "/data/water-docs")
 	hosts[fmt.Sprintf("%swater-docs.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{waterDocs}
 
 	// WORKFORCE
