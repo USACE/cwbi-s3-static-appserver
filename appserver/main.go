@@ -88,6 +88,14 @@ func main() {
 	midas.Static("/", "/data/midas")
 	hosts[fmt.Sprintf("%smidas.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{midas}
 
+	// NWD-RESEARCH
+	// ============
+	nwdResearch := echo.New()
+	nwdResearch.Pre(rewriteMiddleware)
+	nwdResearch.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
+	nwdResearch.Static("/", "/data/nwd-research")
+	hosts[fmt.Sprintf("%nwd-research.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{nwdResearch}
+
 	// WATER
 	// =====
 	water := echo.New()
