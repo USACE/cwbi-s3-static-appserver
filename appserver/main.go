@@ -94,7 +94,7 @@ func main() {
 	nwdResearch.Pre(rewriteMiddleware)
 	nwdResearch.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
 	nwdResearch.Static("/", "/data/nwd-research")
-	hosts[fmt.Sprintf("%nwd-research.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{nwdResearch}
+	hosts[fmt.Sprintf("%snwd-research.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{nwdResearch}
 
 	// WATER
 	// =====
