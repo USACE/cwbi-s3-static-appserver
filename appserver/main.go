@@ -80,6 +80,14 @@ func main() {
 	cumulus.Static("/", "/data/cumulus")
 	hosts[fmt.Sprintf("%scumulus.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{cumulus}
 
+	// CUMULUS DOCS
+	// ============
+	cumulusDocs := echo.New()
+	cumulusDocs.Pre(rewriteMiddleware)
+	cumulusDocs.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
+	cumulusDocs.Static("/", "/data/cumulus-docs")
+	hosts[fmt.Sprintf("%scumulus-docs.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{cumulusDocs}
+
 	// MIDAS
 	// =====
 	midas := echo.New()
