@@ -159,6 +159,14 @@ func main() {
 	cspi.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
 	cspi.Static("/", "/data/cspi")
 	hosts[fmt.Sprintf("%scspi.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{cspi}
+	
+	// MRRP IMS
+	// ===============
+	mrrp := echo.New()
+	mrrp.Pre(rewriteMiddleware)
+	mrrp.Use(middleware.Recover(), middleware.GzipWithConfig(middleware.GzipConfig{Level: 5}))
+	mrrp.Static("/", "/data/mrrp-ims")
+	hosts[fmt.Sprintf("%smrrp-ims.%s", cfg.SubdomainPrefix, cfg.Domain)] = &Host{mrrp}
 
 	// Server
 	e := echo.New()
